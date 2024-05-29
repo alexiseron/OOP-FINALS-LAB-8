@@ -6,7 +6,7 @@ import lab_c
 import lab_d
 import sqldata
 
-#123123
+#hello
 class LoginSystem:
     def __init__(self, master):
         self.master = master
