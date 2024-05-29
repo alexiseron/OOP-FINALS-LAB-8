@@ -1,8 +1,8 @@
 from tkinter import *
 import sqlite3
+from PIL import Image, ImageTk
 
-def create_payroll_window(master):
-
+def create_payrollwindow(master):
 
     def selected_civil_status(choice):
         print("Selected Civil Status: " + choice)
@@ -16,43 +16,41 @@ def create_payroll_window(master):
         print("Selected Paydate: " + choice)
 
     def search():
+            con = sqlite3.connect("OOPLAB8.db")
+            cur = con.cursor()
+            cur.execute(f"SELECT * FROM employee_info_tbl WHERE employeenum = '{employeenum.get()}'")
 
-        con = sqlite3.connect("OOPLAB8.db")
-        cur = con.cursor()
-        cur.execute(f"SELECT * FROM employee_registration WHERE employeenum = '{emp_no_entry.get()}'")
+            info = cur.fetchone()
+            print(info)
 
-        info = cur.fetchone()
-        print(info)
+            first_name_entry.delete(0, "end")
+            first_name_entry.insert(0, info[1])
 
-        first_name_entry.delete(0, "end")
-        first_name_entry.insert(0, info[0])
+            middle_name_entry.delete(0, "end")
+            middle_name_entry.insert(0, info[2])
 
-        middle_name_entry.delete(0, "end")
-        middle_name_entry.insert(0, info[1])
+            last_name_entry.delete(0, "end")
+            last_name_entry.insert(0, info[3])
 
-        last_name_entry.delete(0, "end")
-        last_name_entry.insert(0, info[2])
+            dept_entry.delete(0, "end")
+            dept_entry.insert(0, info[9])
 
-        dept_entry.delete(0, "end")
-        dept_entry.insert(0, info[8])
+            civil_status_entry.delete(0, "end")
+            civil_status_entry.insert(0, info[8])
 
-        civil_status_entry.delete(0, "end")
-        civil_status_entry.insert(0, info[7])
+            qualified_menu.delete(0, "end")
+            qualified_menu.insert(0, info[11])
 
-        qualified_menu.delete(0, "end")
-        qualified_menu.insert(0, info[10])
+            paydate_entry.delete(0, "end")
+            paydate_entry.insert(0, info[13])
 
-        paydate_entry.delete(0, "end")
-        paydate_entry.insert(0, info[12])
+            emp_stat_entry.delete(0, "end")
+            emp_stat_entry.insert(0, info[12])
 
-        emp_stat_entry.delete(0, "end")
-        emp_stat_entry.insert(0, info[11])
+            designation_entry.delete(0, "end")
+            designation_entry.insert(0, info[10])
 
-        designation_entry.delete(0, "end")
-        designation_entry.insert(0, info[9])
-
-
-        con.close()
+            con.close()
 
     def netIncome():
         gross = float(gross_entry.get())
@@ -167,10 +165,6 @@ def create_payroll_window(master):
         income1_entry.insert(0, income_1)
         income2_entry.insert(0, income_2)
 
-
-    import sqlite3
-
-
     def save_command():
         # Connect to SQLite database
         conn = sqlite3.connect('OOPLAB8.db')  # Changed from .py to .db
@@ -178,6 +172,7 @@ def create_payroll_window(master):
 
         # Create table if it does not exist
         create_table_query = '''CREATE TABLE IF NOT EXISTS payrollseris (
+            employeenum TEXT,
             first_name_entry TEXT,
             middle_name_entry TEXT,
             last_name_entry TEXT,
@@ -197,6 +192,7 @@ def create_payroll_window(master):
 
         # Extract data from GUI elements
         data = [
+            employeenum.get(),
             first_name_entry.get(),
             middle_name_entry.get(),
             last_name_entry.get(),
@@ -215,10 +211,10 @@ def create_payroll_window(master):
 
         # Define the SQL query to insert data into the table
         insert_query = '''INSERT INTO payrollseris (
-            first_name_entry, middle_name_entry, last_name_entry, civil_status_entry,
+            employeenum, first_name_entry, middle_name_entry, last_name_entry, civil_status_entry,
             qualified_menu, paydate_entry, emp_stat_entry, designation_entry,
             basic_income, honorarium_income, other_income, gross_income, net_entry, total_deduction
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
         cursor.execute(insert_query, data)
 
         # Commit changes and close the connection
@@ -230,305 +226,280 @@ def create_payroll_window(master):
 
         # Clear the entries (Optional)
         entries = [first_name_entry, middle_name_entry, last_name_entry, civil_status_entry, qualified_menu, paydate_entry,
-                   emp_stat_entry, designation_entry, dept_entry,
+                   emp_stat_entry, designation_entry,
                    income_entry, income1_entry, income2_entry, gross_entry, net_entry, total_loan_entry]
         for entry in entries:
             entry.delete(0, 'end')
 
+    def clear_entries():
+        for entry in (employeenum, dept_entry, rate_entry, cut_off_entry, income_entry,
+                      rate1_entry, cut_off1_entry, income1_entry,
+                      rate2_entry, cut_off2_entry, income2_entry,
+                      gross_entry, net_entry,
+                      first_name_entry, middle_name_entry, last_name_entry,
+                      civil_status_entry, qualified_menu, paydate_entry,
+                      emp_stat_entry, designation_entry,
+                      SSS_entry, phil_entry, pagibig_entry, tax_entry,
+                      sss_loan_entry, pagibig_loan_entry, faculty_deposit_entry,
+                      faculty_loan_entry, salary_loan_entry, other_loan_entry,
+                      total_loan_entry):
+            entry.delete(0, 'end')
+
     window = master
+    window.geometry('1920x1080')
+    window.config(bg='#a2f6c9')
+    window.state("zoomed")
+    window.title("SERIS CHOICE PAYROLL")
 
-    window.title("SE-RI'S CHOICE PAYROLL")
-
-    window.geometry("1337x780")
-
-    button_frame = Frame(window)
-    button_frame.pack()
-
-    window.configure(bg="white")  # Set background color
-
-    cf = Frame(window, width=800, height=1500, bg='#e9eaed')
-    cf.place(x=330, y=50)
-
-    cf = Frame(window, width=100, height=100, bg='black')
-    cf.place(x=350, y=90)
-
-
-    # heading
-    heading = Label(window, text="SE-RI'S CHOICE PAYROLL", bg="#e9eaed", fg="black", font=("Georgia", 20, "bold"))
-    heading.place(relx=0.55, rely=0.06, anchor=CENTER)
-
-    # employee basic info
-    heading1 = Label(window, text="EMPLOYEE BASIC INFO:", fg="black", font=("Arial", 10, "bold"), bg="#e9eaed")
-    heading1.place(relx=0.25, rely=0.08)
+    bg_image = Image.open("C:\\Users\\Axis\\Desktop\\SERIPAYROLL.jpg")
+    bg_image = bg_image.resize((1920, 1080))
+    bg_photo = ImageTk.PhotoImage(bg_image)
+    bg_label = Label(window, image=bg_photo)
+    bg_label.image = bg_photo
+    bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
     # Employee Number
-    emp_no_label = Label(window, text="Employee Number: ", bg="#e9eaed")
-    emp_no_label.place(relx=0.26, rely=0.32)
-    emp_no_entry = Entry(window, width=25, bg='white')
-    emp_no_entry.place(relx=0.37, rely=0.32)
+    employeenum = Label(window, text="Employee Number: ",font=('Algerian', 12,), bg="#A9C4FF")
+    employeenum.place(x=510, y=240)
+    employeenum = Entry(window, width=23, bg='white')
+    employeenum.place(x=710, y=240)
 
     # Search Employee
-    search_emp_label = Label(window, text=" Search Employee: ", bg="#e9eaed")
-    search_emp_label.place(relx=0.26, rely=0.36)
-    search_button = Button(window, bg='red', fg='white', text="SEARCH", command=search)
-    search_button.place(relx=0.37, rely=0.36)
+    search_emp_label = Label(window, text="Search Employee: ",font=('Algerian', 12,), bg="#A9C4FF")
+    search_emp_label.place(x=510, y=280)
+    search_button = Button(window, bg='red', fg='white', text="SEARCH", font=('Algerian', 9,),command=search)
+    search_button.place(x=710, y=280)
 
     # Department
-    dept_label = Label(window, text="Department: ", bg="#e9eaed")
-    dept_label.place(relx=0.26, rely=0.40)
-    dept_entry = Entry(window, width=25, bg='white')
-    dept_entry.place(relx=0.37, rely=0.40)
+    dept_label = Label(window, text="Department: ",font=('Algerian', 12,), bg="#A9C4FF")
+    dept_label.place(x=510, y=320)
+    dept_entry = Entry(window, width=23, bg='white')
+    dept_entry.place(x=710, y=320)
 
     # Basic Income
-    heading1 = Label(window, text="BASIC INCOME:", fg="black", font=("Arial", 10, "bold"), bg="#e9eaed")
-    heading1.place(relx=0.25, rely=0.43)
+    heading1 = Label(window, text="BASIC INCOME -------------------------------------------", fg="black", font=("Algerian", 10, "bold"), bg="#A9C4FF")
+    heading1.place(x=510, y=360)
 
     # Rate / hour
-    rate_label = Label(window, text="Rate / Hour: ", bg="#e9eaed")
-    rate_label.place(relx=0.26, rely=0.46)
-    rate_entry = Entry(window, width=25, bg='white')
-    rate_entry.place(relx=0.37, rely=0.46)
+    rate_label = Label(window, text="Rate / Hour: ",font=('Algerian', 12,), bg="#A9C4FF")
+    rate_label.place(x=510, y=400)
+    rate_entry = Entry(window, width=23, bg='white')
+    rate_entry.place(x=710, y=400)
 
     # No. of Hours / Cut Off
-    cut_off_label = Label(window, text="No. of Hours / Cut Off: ", bg="#e9eaed")
-    cut_off_label.place(relx=0.26, rely=0.50)
-    cut_off_entry = Entry(window, width=25, bg='white')
-    cut_off_entry.place(relx=0.37, rely=0.50)
+    cut_off_label = Label(window, text="No. of Hours / Cut Off: ",font=('Algerian', 9,), bg="#A9C4FF")
+    cut_off_label.place(x=510, y=440)
+    cut_off_entry = Entry(window, width=23, bg='white')
+    cut_off_entry.place(x=710, y=440)
 
     # Income / Cut Off
-    income_label = Label(window, text="Income / Cut Off: ", bg="#e9eaed")
-    income_label.place(relx=0.26, rely=0.54)
-    income_entry = Entry(window, width=25, bg='white')
-    income_entry.place(relx=0.37, rely=0.54)
+    income_label = Label(window, text="Income / Cut Off: ",font=('Algerian', 12,), bg="#A9C4FF")
+    income_label.place(x=510, y=480)
+    income_entry = Entry(window, width=23, bg='white')
+    income_entry.place(x=710, y=480)
 
     # Honorarium Income
-    heading2 = Label(window, text="HONORARIUM INCOME:", fg="black", font=("Arial", 10, "bold"), bg="#e9eaed")
-    heading2.place(relx=0.25, rely=0.57)
+    heading2 = Label(window, text="HONORARIUM INCOME---------------------------------", fg="black", font=("Algerian", 10, "bold"), bg="#A9C4FF")
+    heading2.place(x=510, y=520)
 
     # Rate / hour
-    rate1_label = Label(window, text="Rate / Hour: ", bg="#e9eaed")
-    rate1_label.place(relx=0.26, rely=0.60)
-    rate1_entry = Entry(window, width=25, bg='white')
-    rate1_entry.place(relx=0.37, rely=0.60)
+    rate1_label = Label(window, text="Rate / Hour: ",font=('Algerian', 12,), bg="#A9C4FF")
+    rate1_label.place(x=510, y=560)
+    rate1_entry = Entry(window, width=23, bg='white')
+    rate1_entry.place(x=710, y=560)
 
     # No. of Hours / Cut Off
-    cut_off1_label = Label(window, text="No. of Hours / Cut Off: ", bg="#e9eaed")
-    cut_off1_label.place(relx=0.26, rely=0.64)
-
-    cut_off1_entry = Entry(window, width=25, bg='white')
-    cut_off1_entry.place(relx=0.37, rely=0.64)
+    cut_off1_label = Label(window, text="No. of Hours / Cut Off: ",font=('Algerian', 9,), bg="#A9C4FF")
+    cut_off1_label.place(x=510, y=600)
+    cut_off1_entry = Entry(window, width=23, bg='white')
+    cut_off1_entry.place(x=710, y=600)
 
     # Income / Cut Off
-    income1_label = Label(window, text="Income / Cut Off: ", bg="#e9eaed")
-    income1_label.place(relx=0.26, rely=0.68)
-
-    income1_entry = Entry(window, width=25, bg='white')
-    income1_entry.place(relx=0.37, rely=0.68)
+    income1_label = Label(window, text="Income / Cut Off: ",font=('Algerian', 12,), bg="#A9C4FF")
+    income1_label.place(x=510, y=640)
+    income1_entry = Entry(window, width=23, bg='white')
+    income1_entry.place(x=710, y=640)
 
     # Other Income
-    heading3 = Label(window, text="OTHER INCOME:", fg="black", font=("Arial", 10, "bold"), bg="#e9eaed")
-    heading3.place(relx=0.25, rely=0.71)
+    heading3 = Label(window, text="OTHER INCOME-------------------------------------------", fg="black",font=("Algerian", 10, "bold"), bg="#A9C4FF")
+    heading3.place(x=510, y=680)
 
     # Rate / hour
-    rate2_label = Label(window, text="Rate / Hour: ", bg="#e9eaed")
-    rate2_label.place(relx=0.26, rely=0.74)
-
-    rate2_entry = Entry(window, width=25, bg='white')
-    rate2_entry.place(relx=0.37, rely=0.74)
+    rate2_label = Label(window, text="Rate / Hour: ",font=('Algerian', 12,), bg="#A9C4FF")
+    rate2_label.place(x=510, y=720)
+    rate2_entry = Entry(window, width=23, bg='white')
+    rate2_entry.place(x=710, y=720)
 
     # No. of Hours / Cut Off
-    cut_off2_label = Label(window, text="No. of Hours / Cut Off: ", bg="#e9eaed")
-    cut_off2_label.place(relx=0.26, rely=0.78)
-
-    cut_off2_entry = Entry(window, width=25, bg='white')
-    cut_off2_entry.place(relx=0.37, rely=0.78)
+    cut_off2_label = Label(window, text="No. of Hours / Cut Off: ",font=('Algerian', 9,), bg="#A9C4FF")
+    cut_off2_label.place(x=510, y=760)
+    cut_off2_entry = Entry(window, width=23, bg='white')
+    cut_off2_entry.place(x=710, y=760)
 
     # Income / Cut Off
-    income2_label = Label(window, text="Income / Cut Off: ", bg="#e9eaed")
-    income2_label.place(relx=0.26, rely=0.82)
-
-    income2_entry = Entry(window, width=25, bg='white')
-    income2_entry.place(relx=0.37, rely=0.82)
+    income2_label = Label(window, text="Income / Cut Off: ",font=('Algerian', 12,), bg="#A9C4FF")
+    income2_label.place(x=510, y=800)
+    income2_entry = Entry(window, width=23, bg='white')
+    income2_entry.place(x=710, y=800)
 
     # Summary Income
-    heading4 = Label(window, text="SUMMARY INCOME:", fg="black", font=("Arial", 10, "bold"), bg="#e9eaed")
-    heading4.place(relx=0.25, rely=0.85)
+    heading4 = Label(window, text="SUMMARY INCOME--------------------------------------", fg="black", font=("Algerian", 10, "bold"), bg="#A9C4FF")
+    heading4.place(x=510, y=840)
 
     # Gross Income
-    gross_label = Label(window, text="Gross Income: ", bg="#e9eaed")
-    gross_label.place(relx=0.26, rely=0.88)
-
-    gross_entry = Entry(window, width=25, bg='white')
-    gross_entry.place(relx=0.37, rely=0.88)
+    gross_label = Label(window, text="Gross Income: ",font=('Algerian', 12,), bg="#A9C4FF")
+    gross_label.place(x=510, y=880)
+    gross_entry = Entry(window, width=23, bg='white')
+    gross_entry.place(x=710, y=880)
 
     # Income / Cut Off
-    net_label = Label(window, text="NET INCOME: ", bg="#e9eaed")
-    net_label.place(relx=0.26, rely=0.92)
+    net_label = Label(window, text="Net Income: ",font=('Algerian', 12,), bg="#A9C4FF")
+    net_label.place(x=510, y=920)
+    net_entry = Entry(window, width=23, bg='white')
+    net_entry.place(x=710, y=920)
 
-    net_entry = Entry(window, width=25, bg='white')
-    net_entry.place(relx=0.37, rely=0.92)
+    #-----------------------------------------------------------------------------------------------------------------------
 
     # First name section
-    first_name_label = Label(window, text="First Name", bg="#e9eaed")
-    first_name_label.place(relx=0.51, rely=0.10)
-
+    first_name_label = Label(window, text="First Name",font=('Algerian', 12,), bg="#A9C4FF")
+    first_name_label.place(x=930, y=120)
     first_name_entry = Entry(window, width=25, bg='white')
-    first_name_entry.place(relx=0.62, rely=0.10)
+    first_name_entry.place(x=1100, y=120)
 
     # Middle Name
-    middle_name_label = Label(window, text="Middle Name", bg="#e9eaed")
-    middle_name_label.place(relx=0.51, rely=0.13)
-
+    middle_name_label = Label(window, text="Middle Name",font=('Algerian', 12,), bg="#A9C4FF")
+    middle_name_label.place(x=930, y=160)
     middle_name_entry = Entry(window, width=25, bg='white')
-    middle_name_entry.place(relx=0.62, rely=0.13)
+    middle_name_entry.place(x=1100, y=160)
 
     # Surname
-    last_name_label = Label(window, text="Surname", bg="#e9eaed")
-    last_name_label.place(relx=0.51, rely=0.16)
-
+    last_name_label = Label(window, text="Surname",font=('Algerian', 12,), bg="#A9C4FF")
+    last_name_label.place(x=930, y=200)
     last_name_entry = Entry(window, width=25, bg='white')
-    last_name_entry.place(relx=0.62, rely=0.16)
+    last_name_entry.place(x=1100, y=200)
 
     # Civil Status
-    civil_status_label = Label(window, text="Civil Status", bg="#e9eaed")
-    civil_status_label.place(relx=0.51, rely=0.20)
-
-    civil_status_entry = Entry(window, bg="white")
-    civil_status_entry.place(relx=0.62, rely=0.20)
-    civil_status_entry.config(width=25)
+    civil_status_label = Label(window, text="Civil Status",font=('Algerian', 12,), bg="#A9C4FF")
+    civil_status_label.place(x=930, y=240)
+    civil_status_entry = Entry(window,width=25, bg="white")
+    civil_status_entry.place(x=1100, y=240)
 
     # Quality Dep. Status
-    qualified_label = Label(window, text="Qualified Dep. Status", bg="#e9eaed")
-    qualified_label.place(relx=0.51, rely=0.24)
-
-    qualified_menu = Entry(window, bg="white")
-    qualified_menu.place(relx=0.62, rely=0.24)
-    qualified_menu.config(width=25)
+    qualified_label = Label(window, text="Qualified Dep. Status",font=('Algerian', 8,), bg="#A9C4FF")
+    qualified_label.place(x=930, y=280)
+    qualified_menu = Entry(window,width=25, bg="white")
+    qualified_menu.place(x=1100, y=280)
 
     # Paydate
-    paydate_label = Label(window, text="Paydate", bg="#e9eaed")
-    paydate_label.place(relx=0.51, rely=0.28)
+    paydate_label = Label(window, text="Paydate",font=('Algerian', 12,), bg="#A9C4FF")
+    paydate_label.place(x=930, y=320)
     paydate_entry = Entry(window, width=25, bg="white")
-    paydate_entry.place(relx=0.62, rely=0.28)
+    paydate_entry.place(x=1100, y=320)
 
     # Employee Status
-    emp_stat_label = Label(window, text="Employee Status:", bg="#e9eaed")
-    emp_stat_label.place(relx=0.51, rely=0.33)
-
+    emp_stat_label = Label(window, text="Employee Status:",font=('Algerian', 10,), bg="#A9C4FF")
+    emp_stat_label.place(x=930, y=360)
     emp_stat_entry = Entry(window, width=25, bg='white')
-    emp_stat_entry.place(relx=0.62, rely=0.33)
+    emp_stat_entry.place(x=1100, y=360)
 
     # Designation
-    designation_label = Label(window, text="Designation", bg="#e9eaed")
-    designation_label.place(relx=0.51, rely=0.36)
-
+    designation_label = Label(window, text="Designation",font=('Algerian', 12,), bg="#A9C4FF")
+    designation_label.place(x=930, y=400)
     designation_entry = Entry(window, width=25, bg='white')
-    designation_entry.place(relx=0.62, rely=0.36)
+    designation_entry.place(x=1100, y=400)
 
     # REGULAR DEDUCTIONS
-    heading5 = Label(window, text="REGULAR DEDUCTIONS", fg="black", font=("Arial", 10, "bold"), bg="#e9eaed")
-    heading5.place(relx=0.50, rely=0.40)
+    heading5 = Label(window, text="REGULAR DEDUCTIONS---------------------", fg="black", font=('Algerian', 12,'bold'), bg="#A9C4FF")
+    heading5.place(x=930, y=440)
 
     # SSS Contribution
-    SSS_label = Label(window, text="SSS Contribution:", bg="#e9eaed")
-    SSS_label.place(relx=0.51, rely=0.44)
-
+    SSS_label = Label(window, text="SSS Contribution:", font=('Algerian', 10,), bg="#A9C4FF")
+    SSS_label.place(x=930, y=480)
     SSS_entry = Entry(window, width=25, bg='white')
-    SSS_entry.place(relx=0.62, rely=0.44)
+    SSS_entry.place(x=1100, y=480)
 
     # Philhealth Contribution
-    phil_label = Label(window, text="Philhealth Contribution:", bg="#e9eaed")
-    phil_label.place(relx=0.51, rely=0.47)
-
+    phil_label = Label(window, text="Philhealth Contribution:", font=('Algerian', 8,), bg="#A9C4FF")
+    phil_label.place(x=930, y=520)
     phil_entry = Entry(window, width=25, bg='white')
-    phil_entry.place(relx=0.62, rely=0.47)
+    phil_entry.place(x=1100, y=520)
 
     # Pagibig Contribution
-    pagibig_label = Label(window, text="Pagibig Contribution:", bg="#e9eaed")
-    pagibig_label.place(relx=0.51, rely=0.50)
-
+    pagibig_label = Label(window, text="Pagibig Contribution:", font=('Algerian', 8,), bg="#A9C4FF")
+    pagibig_label.place(x=930, y=560)
     pagibig_entry = Entry(window, width=25, bg='white')
-    pagibig_entry.place(relx=0.62, rely=0.50)
+    pagibig_entry.place(x=1100, y=560)
 
     # Income Tax Contribution
-    tax_label = Label(window, text="Income Tax  Contribution:", bg="#e9eaed")
-    tax_label.place(relx=0.51, rely=0.53)
-
+    tax_label = Label(window, text="Income Tax  Contribution:", font=('Algerian', 7,), bg="#A9C4FF")
+    tax_label.place(x=930, y=600)
     tax_entry = Entry(window, width=25, bg='white')
-    tax_entry.place(relx=0.62, rely=0.53)
+    tax_entry.place(x=1100, y=600)
 
     # OTHER DEDUCTIONS
-    heading6 = Label(window, text="OTHER DEDUCTIONS", fg="black", font=("Arial", 10, "bold"), bg="#e9eaed")
-    heading6.place(relx=0.50, rely=0.58)
+    heading6 = Label(window, text="OTHER DEDUCTIONS----------------------------------", fg="black", font=("Algerian", 10, "bold"), bg="#A9C4FF")
+    heading6.place(x=930, y=640)
 
     # SSS Loan
-    sss_loan_label = Label(window, text="SSS Loan:", bg="#e9eaed")
-    sss_loan_label.place(relx=0.51, rely=0.62)
-
+    sss_loan_label = Label(window, text="SSS Loan:", font=('Algerian', 12,), bg="#A9C4FF")
+    sss_loan_label.place(x=930, y=680)
     sss_loan_entry = Entry(window, width=25, bg='white')
-    sss_loan_entry.place(relx=0.62, rely=0.62)
+    sss_loan_entry.place(x=1100, y=680)
 
     # Pagibig Loan
-    pagibig_loan_label = Label(window, text="Pagibig Loan:", bg="#e9eaed")
-    pagibig_loan_label.place(relx=0.51, rely=0.65)
-
+    pagibig_loan_label = Label(window, text="Pagibig Loan:", font=('Algerian', 12,), bg="#A9C4FF")
+    pagibig_loan_label.place(x=930, y=710)
     pagibig_loan_entry = Entry(window, width=25, bg='white')
-    pagibig_loan_entry.place(relx=0.62, rely=0.65)
+    pagibig_loan_entry.place(x=1100, y=710)
 
     # Faculty Savings Deposit
-    faculty_deposit_label = Label(window, text="Faculty Savings Deposit:", bg="#e9eaed")
-    faculty_deposit_label.place(relx=0.51, rely=0.68)
-
+    faculty_deposit_label = Label(window, text="Faculty Savings Deposit:", font=('Algerian', 8,), bg="#A9C4FF")
+    faculty_deposit_label.place(x=930, y=740)
     faculty_deposit_entry = Entry(window, width=25, bg='white')
-    faculty_deposit_entry.place(relx=0.62, rely=0.68)
+    faculty_deposit_entry.place(x=1100, y=740)
 
     # Faculty Savings Loan
-    faculty_loan_label = Label(window, text="Faculty Savings Loan:", bg="#e9eaed")
-    faculty_loan_label.place(relx=0.51, rely=0.71)
-
+    faculty_loan_label = Label(window, text="Faculty Savings Loan:", font=('Algerian', 8,), bg="#A9C4FF")
+    faculty_loan_label.place(x=930, y=770)
     faculty_loan_entry = Entry(window, width=25, bg='white')
-    faculty_loan_entry.place(relx=0.62, rely=0.71)
+    faculty_loan_entry.place(x=1100, y=770)
 
     # Salary Loan
-    salary_loan_label = Label(window, text="Salary Loan:", bg="#e9eaed")
-    salary_loan_label.place(relx=0.51, rely=0.74)
-
+    salary_loan_label = Label(window, text="Salary Loan:", font=('Algerian', 12,), bg="#A9C4FF")
+    salary_loan_label.place(x=930, y=800)
     salary_loan_entry = Entry(window, width=25, bg='white')
-    salary_loan_entry.place(relx=0.62, rely=0.74)
+    salary_loan_entry.place(x=1100, y=800)
 
     # Other Loans
-    other_loan_label = Label(window, text="Other Loans:", bg="#e9eaed")
-    other_loan_label.place(relx=0.51, rely=0.78)
-
+    other_loan_label = Label(window, text="Other Loans:", font=('Algerian', 12,), bg="#A9C4FF")
+    other_loan_label.place(x=930, y=830)
     other_loan_entry = Entry(window, width=25, bg='white')
-    other_loan_entry.place(relx=0.62, rely=0.78)
+    other_loan_entry.place(x=1100, y=830)
 
-    # DEDUCTIONS SUMMARY
-    heading7 = Label(window, text="DEDUCTIONS SUMMARY", fg="black", font=("Arial", 10, "bold"), bg="#e9eaed")
-    heading7.place(relx=0.50, rely=0.83)
-
+    justalabel = Label(window, text="--------------------------------------------------------------------------", font=('Algerian', 10,), bg="#A9C4FF")
+    justalabel.place(x=930, y=850)
     # Total Deductions
-    total_label = Label(window, text="Total Deductions:", bg="#e9eaed")
-    total_label.place(relx=0.51, rely=0.87)
-
+    total_label = Label(window, text="Total Deductions:", font=('Algerian', 10,), bg="#A9C4FF")
+    total_label.place(x=930, y=880)
     total_loan_entry = Entry(window, width=25, bg='white')
-    total_loan_entry.place(relx=0.62, rely=0.87)
+    total_loan_entry.place(x=1100, y=880)
+    #-----------------------------------------------------------------------------------------------------------------------
 
     # BUTTONS
-    gross_button = Button(window, bg='#0077b6', fg='white', text="GROSS INCOME", command=grossIncome)
-    gross_button.place(relx=0.50, rely=0.91)
+    gross_button = Button(window, bg='#0077b6', fg='white', text="GROSS INCOME", font=("Algerian",8),command=grossIncome)
+    gross_button.place(x=930, y=920)
 
-    net_button = Button(window, bg='#0077b6', fg='white', text="NET INCOME", command=netIncome)
-    net_button.place(relx=0.587, rely=0.91)
+    net_button = Button(window, bg='#0077b6', fg='white', text="NET INCOME",font=("Algerian",8),command=netIncome)
+    net_button.place(x=1035, y=920)
 
-    save_button = Button(window, bg='#138086', fg='white', text="SAVE", command=save_command)
-    save_button.place(relx=0.66, rely=0.91)
+    save_button = Button(window, bg='#138086', fg='white', text="SAVE",font=("Algerian",8),command=save_command)
+    save_button.place(x=1125, y=920)
 
-    update_button = Button(window, bg='#138086', fg='white', text="UPDATE")
-    update_button.place(relx=0.70, rely=0.91)
+    update_button = Button(window, bg='#138086', fg='white', text="UPDATE",font=("Algerian",8))
+    update_button.place(x=1175, y=920)
 
-    NEW_button = Button(window, bg='orange', fg='black', text="NEW")
-    NEW_button.place(relx=0.75, rely=0.91)
+    NEW_button = Button(window, bg='orange', fg='black', text="NEW",font=("Algerian",8),command=clear_entries)
+    NEW_button.place(x=1245, y=920)
 
 def Payroll(master):
-    create_payroll_window(master)
+    create_payrollwindow(master)

@@ -1,211 +1,258 @@
+import tkinter as tk
 import sqlite3
-from tkinter import *
-from tkcalendar import DateEntry
+from PIL import Image, ImageTk
 
-def create_employee_info_window(master):
 
-    def create_label_entry(frame, text, x_rel, y_rel, width):
-        label = Label(frame, text=text, font=("Arial", 10), bg="#FFFFFF")
-        label.place(relx=x_rel, rely=y_rel)
-
-        entry = Entry(frame, bg="#E4E0E0", width=width)
-        entry.place(relx=x_rel, rely=y_rel + 0.04)
-
-        return entry
-
-    def create_option_menu(frame, options, x_rel, y_rel, width):
-        selected_option = StringVar()
-        selected_option.set(options[0])
-        option_menu = OptionMenu(frame, selected_option, *options, command=on_select)
-        option_menu.config(bg="#FFFFFF", activebackground="#E4E0E0", bd=0, width=width, height=1)
-        option_menu.place(relx=x_rel, rely=y_rel)
-        return selected_option
-
-    def browse_file():
-        pass
-
-    def on_select(value):
-        print("Selected gender:", value)
+def create_employeeinfowindow(master):
 
     def save_command():
-        conn = sqlite3.connect('C:\\Users\\Axis\\PycharmProjects\\OOP FINALS LAB 8\\OOPLAB8.db')
+        conn = sqlite3.connect('OOPLAB8.db')
         cursor = conn.cursor()
-        create_table_query = '''CREATE TABLE IF NOT EXISTS employee_registration (
-            firstname TEXT,
-            middlename TEXT,
-            lastname TEXT,
-            suffix TEXT,
-            bday TEXT,
-            gender TEXT,
-            nationality TEXT,
-            civilstat TEXT,
-            department TEXT,
-            designation TEXT,
-            qualitydepstat TEXT,
-            empstatus TEXT,
-            paydate TEXT,
-            employeenum TEXT,
-            contactno TEXT,
-            email TEXT,
-            socmed TEXT,
-            socmedno TEXT,
-            address1 TEXT,
-            address2 TEXT,
-            city TEXT,
-            state TEXT,
-            country TEXT,
-            zipcode TEXT
-        )'''
+        create_table_query = '''CREATE TABLE IF NOT EXISTS employee_info_tbl (
+                                    firstname TEXT,
+                                    middlename TEXT,
+                                    lastname TEXT,
+                                    suffix TEXT,
+                                    dateofbirth TEXT,
+                                    gender TEXT,
+                                    nationality TEXT,
+                                    civilstat TEXT,
+                                    department TEXT,
+                                    designation TEXT,
+                                    qualitydepstat TEXT,
+                                    empstatus TEXT,
+                                    paydate TEXT,
+                                    employeenum TEXT,
+                                    contactno TEXT,
+                                    email TEXT,
+                                    socmed TEXT,
+                                    socmedno TEXT,
+                                    address1 TEXT,
+                                    address2 TEXT,
+                                    city TEXT,
+                                    state TEXT,
+                                    country TEXT,
+                                    zipcode TEXT
+                                )'''
         cursor.execute(create_table_query)
 
+        # Extract data from GUI elements
         data = [
-            firstname.get(),
-            middlename.get(),
-            lastname.get(),
-            suffix.get(),
-            bday_entry.get(),
-            selected_gender.get(),
-            selected_nationality.get(),
-            selected_civilstat.get(),
-            department.get(),
-            designation.get(),
-            selected_qualitydepstat.get(),
-            empstatus.get(),
+            firstname_entry.get(),
+            middlename_entry.get(),
+            lastname_entry.get(),
+            suffix_entry.get(),
+            dateofbirth_entry.get(),
+            gender_entry.get(),
+            nationality_entry.get(),
+            civilstat_entry.get(),
+            department_entry.get(),
+            designation_entry.get(),
+            qualitydepstat_entry.get(),
+            empstatus_entry.get(),
             paydate_entry.get(),
-            employeenum.get(),
-            contactno.get(),
-            email.get(),
-            selected_socmed.get(),
-            socmedno.get(),
-            address1.get(),
-            address2.get(),
-            city.get(),
-            state.get(),
-            selected_country.get(),
-            zipcode.get()
+            employeenum_entry.get(),
+            contactno_entry.get(),
+            email_entry.get(),
+            socmed_entry.get(),
+            socmedno_entry.get(),
+            address1_entry.get(),
+            address2_entry.get(),
+            city_entry.get(),
+            state_entry.get(),
+            country_entry.get(),
+            zipcode_entry.get()
         ]
 
-        insert_query = '''INSERT INTO employee_registration (
-            firstname, middlename, lastname, suffix, bday, gender, nationality, civilstat, department, designation, qualitydepstat, empstatus, paydate, employeenum, contactno, email, socmed, socmedno, address1, address2, city, state, country, zipcode
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        # Define the SQL query to insert data into the table
+        insert_query = '''INSERT INTO employee_info_tbl (
+                            firstname, middlename, lastname, suffix, dateofbirth, gender, nationality, civilstat, department,
+                            designation, qualitydepstat, empstatus, paydate, employeenum, contactno, email, socmed, socmedno,
+                            address1, address2, city, state, country, zipcode
+                          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
         cursor.execute(insert_query, data)
 
+        # Commit changes and close the connection
         conn.commit()
         conn.close()
+        print("UPLOADED TO THE DATABASE")
 
-        print("UPLOADED")
+    def clear_inputs():
+        print("Clearing inputs...")
+        firstname_entry.delete(0, tk.END)
+        middlename_entry.delete(0, tk.END)
+        lastname_entry.delete(0, tk.END)
+        suffix_entry.delete(0, tk.END)
+        dateofbirth_entry.delete(0, tk.END)
+        gender_entry.delete(0, tk.END)
+        nationality_entry.delete(0, tk.END)
+        civilstat_entry.delete(0, tk.END)
+        department_entry.delete(0, tk.END)
+        designation_entry.delete(0, tk.END)
+        qualitydepstat_entry.delete(0, tk.END)
+        empstatus_entry.delete(0, tk.END)
+        paydate_entry.delete(0, tk.END)
+        employeenum_entry.delete(0, tk.END)
+        contactno_entry.delete(0, tk.END)
+        email_entry.delete(0, tk.END)
+        socmed_entry.delete(0, tk.END)
+        socmedno_entry.delete(0, tk.END)
+        address1_entry.delete(0, tk.END)
+        address2_entry.delete(0, tk.END)
+        city_entry.delete(0, tk.END)
+        state_entry.delete(0, tk.END)
+        country_entry.delete(0, tk.END)
+        zipcode_entry.delete(0, tk.END)
 
-        clear_entries()
-
-    def clear_entries():
-        entries = [
-            firstname, middlename, lastname, suffix,
-            bday_entry, selected_gender, selected_nationality,
-            selected_civilstat, department, designation,
-            selected_qualitydepstat, empstatus, paydate_entry,
-            employeenum, contactno, email, selected_socmed,
-            socmedno, address1, address2, city, state,
-            selected_country, zipcode
-        ]
-
-        for entry in entries:
-            if isinstance(entry, Entry):
-                entry.delete(0, "end")
-            elif isinstance(entry, StringVar):
-                entry.set("")
 
     window = master
-    window.geometry("1200x800")
-    window.config(bg="#87CEEB")
+    window.geometry('1920x1080')
+    window.state("zoomed")
+    window.config(bg='#a2f6c9')
 
-    frame = Frame(window, width=1100, height=700, bg="#FFFFFF")
-    frame.place(relx=.5, rely=.5, anchor="center")
+    bg_image = Image.open("C:\\Users\\Axis\\Desktop\\SERIEMPLOYEE.jpg")
+    bg_image = bg_image.resize((1920, 1080))
+    bg_photo = ImageTk.PhotoImage(bg_image)
+    bg_label = tk.Label(window, image=bg_photo)
+    bg_label.image = bg_photo
+    bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-    user_prof = PhotoImage(file='C:\\Users\\Axis\\PycharmProjects\\OOP FINALS LAB 8\\pics\\userprof2.png')
-    user_prof = user_prof.subsample(4, 4)
 
-    label = Label(frame, image=user_prof)
-    label.place(x=130, y=100)
+    firstframe = tk.Frame(window, width=800, height=150, bg='#CADDFF', highlightbackground='black', highlightthickness='2')
+    firstframe.pack()
+    firstframe.place(x=70, y=100)
 
-    choose_file_button = Button(window, text="Choose File", command=browse_file)
-    choose_file_button.pack(padx=250, pady=200, anchor='nw')
+    secondframe = tk.Frame(window, width=800, height=150, bg='#CADDFF', highlightbackground='black', highlightthickness='2')
+    secondframe.pack()
+    secondframe.place(x=70, y=270)
 
-    boldtitle = Label(frame, text="SE-RI'S EMPLOYEE PERSONAL INFORMATION", font=('Algerian', 30, 'bold'), bg="#FFFFFF")
-    boldtitle.place(x=100, y=50)
+    thirdframe = tk.Frame(window, width=800, height=150, bg='#CADDFF', highlightbackground='black', highlightthickness='2')
+    thirdframe.pack()
+    thirdframe.place(x=70, y=440)
 
-    firstname = create_label_entry(frame, "First Name", 0.28, 0.2, 25)
-    middlename = create_label_entry(frame, "Middle Name", 0.45, 0.2, 25)
-    lastname = create_label_entry(frame, "Last Name", 0.61, 0.2, 25)
-    suffix = create_label_entry(frame, "Suffix", 0.77, 0.2, 25)
+    fourthframe = tk.Frame(window, width=800, height=360, bg='#CADDFF', highlightbackground='black', highlightthickness='2')
+    fourthframe.pack()
+    fourthframe.place(x=70, y=610)
 
-    bday = Label(window, text="Date of Birth", font=("Arial", 10), bg="#FFFFFF")
-    bday.place(relx=.297, rely=.29)
-    bday_entry = DateEntry(window, bg="#E4E0E0", width=18, borderwidth=2, font=("Helvetica", 11))
-    bday_entry.place(relx=.297, rely=.32)
+    # entries and labels
 
-    gender = Label(frame, text="Gender", font=("Arial", 10), bg="#FFFFFF")
-    gender.place(relx=.45, rely=.27)
-    gender_options = ["Select your gender", "Male", "Female", "Others"]
-    selected_gender = create_option_menu(frame, gender_options, 0.45, 0.3, 15)
+    userframe = tk.Frame(window, width=130, height=130, bg='#CADDFF', highlightbackground='black', highlightthickness='2')
+    userframe.place(x=70, y=40)
 
-    nationality = Label(frame, text="Nationality", font=("Arial", 10), bg="#FFFFFF")
-    nationality.place(relx=.61, rely=.27)
-    nationality_options = ["---", "Filipino", "American", "Chinese"]
-    selected_nationality = create_option_menu(frame, nationality_options, 0.61, 0.3, 13)
+    filebutton = tk.Button(window, width='10', text="Choose File", bg="white", fg="black", highlightbackground='#a2f6c9', highlightthickness='3', font=('Algerian', 8, 'bold'))
+    filebutton.place(x=85, y=190)
 
-    civilstat = Label(frame, text="Civil Status", font=("Arial", 10), bg="#FFFFFF")
-    civilstat.place(relx=.77, rely=.27)
-    civilstat_options = ["--Select One--", "Single", "Married", "Widow"]
-    selected_civilstat = create_option_menu(frame, civilstat_options, 0.77, 0.3, 15)
+    tk.Label(window, text="First Name:", font=('Algerian', 12,), bg="#CADDFF").place(x=235, y=110)
+    firstname_entry = tk.Entry(window, width='20', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    firstname_entry.place(x=235, y=140)
 
-    department = create_label_entry(frame, "Department", 0.1, 0.38, 50)
-    designation = create_label_entry(frame, "Designation", 0.42, 0.38, 40)
+    tk.Label(window, text="Middle Name:", font=('Algerian', 12,), bg="#CADDFF").place(x=415, y=110)
+    middlename_entry = tk.Entry(window, width='20', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    middlename_entry.place(x=415, y=140)
 
-    qualitydepstat = Label(frame, text="Quality Dep. Status", font=("Arial", 10), bg="#FFFFFF")
-    qualitydepstat.place(relx=.67, rely=.38)
-    qualitydepstat_options = ["--select one--"]
-    selected_qualitydepstat = create_option_menu(frame, qualitydepstat_options, 0.67, 0.41, 30)
+    tk.Label(window, text="Last Name:", font=('Algerian', 12,), bg="#CADDFF").place(x=590, y=110)
+    lastname_entry = tk.Entry(window, width='20', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    lastname_entry.place(x=590, y=140)
 
-    empstatus = create_label_entry(frame, "Employee Status", 0.1, 0.46, 70)
+    tk.Label(window, text="Suffix:", font=('Algerian', 12,), bg="#CADDFF").place(x=765, y=110)
+    suffix_entry = tk.Entry(window, width='10', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    suffix_entry.place(x=765, y=140)
 
-    paydate = Label(window, text="Paydate", font=("Arial", 10), bg="#FFFFFF")
-    paydate.place(relx=.53, rely=.46)
-    paydate_entry = DateEntry(window, bg="#E4E0E0", width=7, borderwidth=2, font=("Helvetica", 11))
-    paydate_entry.place(relx=.53, rely=.5)
+    tk.Label(window, text="Date of Birth:", font=('Algerian', 12), bg="#CADDFF").place(x=235, y=170)
+    dateofbirth_entry = tk.Entry(window, width='20', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    dateofbirth_entry.place(x=235, y=200)
 
-    employeenum = create_label_entry(frame, "Employee Number", 0.65, 0.46, 30)
+    tk.Label(window, text="Gender:", font=('Algerian', 12,), bg="#CADDFF").place(x=415, y=170)
+    gender_entry = tk.Entry(window, width='10', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    gender_entry.place(x=415, y=200)
 
-    semi_heading = Label(frame, text="Contact Info", font=('Arial', 15, 'bold'), bg="#FFFFFF")
-    semi_heading.place(x=100, y=385)
+    tk.Label(window, text="Nationality:", font=('Algerian', 12,), bg="#CADDFF").place(x=515, y=170)
+    nationality_entry = tk.Entry(window, width='20', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    nationality_entry.place(x=515, y=200)
 
-    contactno = create_label_entry(frame, "Contact No.", 0.1, 0.6, 30)
-    email = create_label_entry(frame, "Email", 0.3, 0.6, 45)
+    tk.Label(window, text="Civil Status:", font=('Algerian', 12,), bg="#CADDFF").place(x=690, y=170)
+    civilstat_entry = tk.Entry(window, width='19', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    civilstat_entry.place(x=695, y=200)
 
-    socmed = Label(frame, text="Other (Social Media)", font=("Arial", 10), bg="#FFFFFF")
-    socmed.place(relx=.56, rely=.6)
-    socmed_options = ["--select one--"]
-    selected_socmed = create_option_menu(frame, socmed_options, 0.56, 0.64, 25)
+    # 2nd frame
 
-    socmedno = create_label_entry(frame, "Social Media Account ID/NO", 0.76, 0.6, 40)
+    tk.Label(window, text="Department:", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=280)
+    department_entry = tk.Entry(window, width='50', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    department_entry.place(x=90, y=310)
 
-    semi_heading2 = Label(frame, text="Address", font=('Arial', 15, 'bold'), bg="#FFFFFF")
-    semi_heading2.place(x=100, y=480)
+    tk.Label(window, text="Designation:", font=('Algerian', 12,), bg="#CADDFF").place(x=510, y=280)
+    designation_entry = tk.Entry(window, width='20', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    designation_entry.place(x=510, y=310)
 
-    address1 = create_label_entry(frame, "Address Line 1", 0.1, 0.74, 50)
-    address2 = create_label_entry(frame, "Address Line 2", 0.4, 0.74, 50)
-    city = create_label_entry(frame, "City Municipality", 0.1, 0.81, 50)
-    state = create_label_entry(frame, "State/Province", 0.4, 0.81, 50)
+    tk.Label(window, text="Qualified Dep. Status:", font=('Algerian', 8, 'bold'), bg="#CADDFF").place(x=685, y=285)
+    qualitydepstat_entry = tk.Entry(window, width='20', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    qualitydepstat_entry.place(x=690, y=310)
 
-    country = Label(frame, text="Country", font=("Arial", 10), bg="#FFFFFF")
-    country.place(relx=.7, rely=.74)
-    country_options = ["--select one--"]
-    selected_country = create_option_menu(frame, country_options, 0.7, 0.77, 25)
+    tk.Label(window, text="Employee Status:", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=350)
+    empstatus_entry = tk.Entry(window, width='60', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    empstatus_entry.place(x=90, y=375)
 
-    zipcode = create_label_entry(frame, "Zip Code", 0.7, 0.81, 25)
+    tk.Label(window, text="PayDate:", font=('Algerian', 10), bg="#CADDFF").place(x=590, y=350)
+    paydate_entry = tk.Entry(window, width='10', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    paydate_entry.place(x=590, y=375)
 
-    save_button = Button(frame, text="SAVE", bg="#87CEEB", font=("Arial, 10"),
-                         fg="#000000", width=6, height=1, command=save_command)
-    save_button.place(x=100, y=650)
+    tk.Label(window, text="Employee Number:", font=('Algerian', 10), bg="#CADDFF").place(x=685, y=350)
+    employeenum_entry = tk.Entry(window, width='20', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    employeenum_entry.place(x=690, y=375)
+
+    # 3rd frame
+
+    tk.Label(window, text="Contact Info:", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=450)
+    contactno_entry = tk.Entry(window, width='45', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    contactno_entry.place(x=90, y=480)
+
+    tk.Label(window, text="Email:", font=('Algerian', 12,), bg="#CADDFF").place(x=480, y=450)
+    email_entry = tk.Entry(window, width='45', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    email_entry.place(x=480, y=480)
+
+    tk.Label(window, text="Other (Social Media):", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=510)
+    socmed_entry = tk.Entry(window, width='45', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    socmed_entry.place(x=90, y=540)
+
+    tk.Label(window, text="Social Media Account ID/No:", font=('Algerian', 12,), bg="#CADDFF").place(x=480, y=510)
+    socmedno_entry = tk.Entry(window, width='45', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    socmedno_entry.place(x=480, y=540)
+
+    # 4th frame
+
+    tk.Label(window, text="Address Line 1:", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=620)
+    address1_entry = tk.Entry(window, width='94', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    address1_entry.place(x=90, y=650)
+
+    tk.Label(window, text="Address Line 2:", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=690)
+    address2_entry = tk.Entry(window, width='94', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    address2_entry.place(x=90, y=720)
+
+    tk.Label(window, text="City/Municipality:", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=760)
+    city_entry = tk.Entry(window, width='45', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    city_entry.place(x=90, y=790)
+
+    tk.Label(window, text="State/Province:", font=('Algerian', 12,), bg="#CADDFF").place(x=480, y=760)
+    state_entry = tk.Entry(window, width='45', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    state_entry.place(x=480, y=790)
+
+    tk.Label(window, text="Country:", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=830)
+    country_entry = tk.Entry(window, width='45', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    country_entry.place(x=90, y=860)
+
+    tk.Label(window, text="Zip Code:", font=('Algerian', 12,), bg="#CADDFF").place(x=480, y=830)
+    zipcode_entry = tk.Entry(window, width='25', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    zipcode_entry.place(x=480, y=860)
+
+    tk.Label(window, text="Picture Path:", font=('Algerian', 12,), bg="#CADDFF").place(x=90, y=900)
+    picpath_entry = tk.Entry(window, width='40', bg="#FFFFFF", highlightbackground='black', highlightthickness='2')
+    picpath_entry.place(x=90, y=930)
+
+    save = tk.Button(window, width='10', text="Save", bg="black", fg="white", border='2', highlightbackground='#a2f6c9', highlightthickness='3', font=('Algerian', 10,), command=save_command)
+    save.place(x=620, y=910)
+
+    cancel = tk.Button(window, width='10', text="Cancel", bg="white", fg="black", border='2', highlightbackground='#a2f6c9', highlightthickness='3', font=('Algerian', 10,), command=clear_inputs)
+    cancel.place(x=740, y=910)
 
 def EmployeeInfo(master):
-    create_employee_info_window(master)
+    create_employeeinfowindow(master)

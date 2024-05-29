@@ -1,65 +1,55 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox
 from PIL import Image, ImageTk
-import lab_b
+import lab_b  # Assuming these are your custom modules
 import lab_c
 import lab_d
 import sqldata
+
 
 class LoginSystem:
     def __init__(self, master):
         self.master = master
         self.master.title("Login System")
-        self.master.configure(bg="light blue")
-        self.master.geometry("700x600")
-        self.frame = tk.Frame(master=self.master, bg="light blue")
-        self.frame.place(relx=0.5, rely=0.5, anchor="center")  # Placing the frame in the center
+        self.master.geometry("1920x1080")
+        self.master.state("zoomed")
+
+        # Load and set the background image
+        self.image = Image.open("C:\\Users\\Axis\\Desktop\\SERILOGIN.jpg")
+        self.tk_image = ImageTk.PhotoImage(self.image)
+        self.image_label = tk.Label(master, image=self.tk_image)
+        self.image_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         self.create_widgets()
 
     def create_widgets(self):
-        self.create_label()
         self.create_entry_username()
         self.create_entry_password()
         self.create_button_login()
-        self.create_checkbox_remember()
-
-    def create_label(self):
-        self.label = tk.Label(
-            master=self.frame, text="Login System", font=("Times New Roman bold", 50), bg="light blue", fg="black"
-        )
-        self.label.grid(row=0, column=0, columnspan=2, pady=20)
 
     def create_entry_username(self):
         self.username = tk.StringVar()
-        tk.Label(self.frame, text="Username:", font=("Times New Roman", 18), bg="light blue", fg="black").grid(row=1, column=0, sticky="e")
-        self.entry_username = tk.Entry(
-            master=self.frame, textvariable=self.username, width=30, font=("Times New Roman", 18)
-        )
-        self.entry_username.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+        tk.Label(self.master, text="USERNAME:", bg="#CADDFF", fg="black", font=('Impact', 20, 'bold'), width=10,
+                 highlightbackground='black', highlightthickness=2) \
+            .place(x=1100, y=330)
+        self.entry_username = tk.Entry(self.master, textvariable=self.username, width=20, bg="#FFFFFF",
+                                       highlightbackground='black', highlightthickness=2, font=('Impact', 20, 'bold'))
+        self.entry_username.place(x=1300, y=330)
 
     def create_entry_password(self):
         self.password = tk.StringVar()
-        tk.Label(self.frame, text="Password:", font=("Times New Roman", 18), bg="light blue", fg="black").grid(row=2, column=0, sticky="e")
-        self.entry_password = tk.Entry(
-            master=self.frame,
-            textvariable=self.password,
-            width=30,
-            font=("Times New Roman", 18),
-            show="*",
-        )
-        self.entry_password.grid(row=2, column=1, padx=10, pady=10, sticky="w")
+        tk.Label(self.master, text="PASSWORD:", bg="#CADDFF", fg="black", font=('Impact', 20, 'bold'), width=10,
+                 highlightbackground='black', highlightthickness=2) \
+            .place(x=1100, y=430)
+        self.entry_password = tk.Entry(self.master, textvariable=self.password, width=20, bg="#FFFFFF",
+                                       highlightbackground='black', highlightthickness=2, font=('Impact', 20, 'bold'),
+                                       show="*")
+        self.entry_password.place(x=1300, y=430)
 
     def create_button_login(self):
-        self.button = tk.Button(master=self.frame, text="Login", command=self.handle_login, font=("Arial", 18))
-        self.button.grid(row=3, column=1, pady=20)
-
-    def create_checkbox_remember(self):
-        self.remember_me = tk.BooleanVar()
-        self.checkbox_remember_me = tk.Checkbutton(
-            master=self.frame, text="Remember Me", variable=self.remember_me, font=("Times New Roman", 18), bg="light blue", fg="black"
-        )
-        self.checkbox_remember_me.grid(row=4, column=1, pady=10)
+        self.button = tk.Button(self.master, text="Login", command=self.handle_login, bg="black", fg="white", border=2,
+                                highlightbackground='#a2f6c9', highlightthickness=3, font=('Impact', 20), width=20)
+        self.button.place(x=1225, y=550)
 
     def handle_login(self):
         username = self.username.get()
@@ -110,41 +100,37 @@ class LoginSystem:
         admin = tk.Toplevel(self.master)
         self.admin_window(admin)
 
-    def sqldatawindow(self):
+    def sqldata(self):
         self.master.withdraw()  # Hide the login window
         sql_window1 = tk.Toplevel(self.master)
         sqldata.SQLData(sql_window1)
 
-
     def admin_window(self, window):
         window.title("ADMIN")
         window.geometry("1920x1080")
+        window.title("SERIS INFORMATION SYSTEM (ADMIN)")
 
-        bg_image = Image.open("C:\\Users\\Axis\\PycharmProjects\\OOP FINALS LAB 8\\pics\\ADAMSONBG.png")
-        bg_image = bg_image.resize((1950, 1100))
+        bg_image = Image.open("C:\\Users\\Axis\\Desktop\\SERIADMIN.jpg")
+        bg_image = bg_image.resize((1920, 1080))
         bg_photo = ImageTk.PhotoImage(bg_image)
         bg_label = tk.Label(window, image=bg_photo)
         bg_label.image = bg_photo
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        #window creator
 
-        main_frame = tk.Frame(window)
-        main_frame.place(relx=0.25, rely=0.50, anchor="center")
+        employee_button = tk.Button(window, text="EMPLOYEE PAGE", font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2',  command=self.open_employee_info)
+        employee_button.place(x=1500,y=400)
 
-        employee_button = ttk.Button(main_frame, text="emp", command= self.open_employee_info)
-        employee_button.grid(row=0, column=0, padx=5, pady=5)
+        payroll_button = tk.Button(window, text="PAYROLL PAGE",font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2', command=self.open_payroll)
+        payroll_button.place(x=1500,y=540)
 
-        payroll_button = ttk.Button(main_frame, text="payroll", command= self.open_payroll)
-        payroll_button.grid(row=0, column=1, padx=5, pady=5)
+        user_button = tk.Button(window, text="USER PAGE",font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.open_user)
+        user_button.place(x=1500,y=660)
 
-        user_button = ttk.Button(main_frame, text="user", command=self.open_user)
-        user_button.grid(row=0, column=2, padx=5, pady=5)
+        payrollsql_button = tk.Button(window, text="PAYROLL DATA",font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.sqldata)
+        payrollsql_button.place(x=1500,y=790)
 
-        sql_button = ttk.Button(main_frame, text="SQL Data", command=self.sqldatawindow)
-        sql_button.grid(row=0, column=3, padx=5, pady=5)
-
-
+# Example usage
 root = tk.Tk()
 app = LoginSystem(root)
 root.mainloop()
