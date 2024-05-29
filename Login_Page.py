@@ -127,6 +127,8 @@ class LoginSystem:
         bg_label.image = bg_photo
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+        #window creator
+
         main_frame = tk.Frame(window)
         main_frame.place(relx=0.25, rely=0.50, anchor="center")
 
