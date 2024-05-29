@@ -117,7 +117,7 @@ class LoginSystem:
         bg_label.image = bg_photo
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-
+        #asdasd
         employee_button = tk.Button(window, text="EMPLOYEE PAGE", font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2',  command=self.open_employee_info)
         employee_button.place(x=1500,y=400)
 
