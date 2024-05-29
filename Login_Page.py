@@ -36,7 +36,6 @@ class LoginSystem:
                                        highlightbackground='black', highlightthickness=2, font=('Impact', 20, 'bold'))
         self.entry_username.place(x=1300, y=330)
 
-    #I WILL EDIT THIS LINE
     def create_entry_password(self):
         self.password = tk.StringVar()
         tk.Label(self.master, text="PASSWORD:", bg="#CADDFF", fg="black", font=('Impact', 20, 'bold'), width=10,
@@ -47,8 +46,9 @@ class LoginSystem:
                                        show="*")
         self.entry_password.place(x=1300, y=430)
 
+    #I WILL EDIT THIS LINE (EDITED)
     def create_button_login(self):
-        self.button = tk.Button(self.master, text="Login", command=self.handle_login, bg="black", fg="white", border=2,
+        self.button = tk.Button(self.master, text="Login", command=self.handle_login, bg="WHITE", fg="black", border=2,
                                 highlightbackground='#a2f6c9', highlightthickness=3, font=('Impact', 20), width=20)
         self.button.place(x=1225, y=550)
 
