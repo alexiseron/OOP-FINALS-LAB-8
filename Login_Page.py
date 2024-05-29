@@ -128,7 +128,7 @@ class LoginSystem:
         user_button.place(x=1500,y=660)
 
         # THIS IS EDITED BY ME - GAB
-        payrollsql_button = tk.Button(window, text="PAYROLL DATA",font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.sqldata)
+        payrollsql_button = tk.Button(window, text="PAYROLL DATA",font=("Impact",20,"bold"),bg="green", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.sqldata)
         payrollsql_button.place(x=1500,y=790)
 
 # Example usage
