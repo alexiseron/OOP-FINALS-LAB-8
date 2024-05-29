@@ -10,7 +10,7 @@ import sqldata
 class LoginSystem:
     def __init__(self, master):
         self.master = master
-        self.master.title("Login System")
+        self.master.title("Login Page")
         self.master.geometry("1920x1080")
         self.master.state("zoomed")
 
