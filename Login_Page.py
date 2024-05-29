@@ -45,7 +45,7 @@ class LoginSystem:
                                        show="*")
         self.entry_password.place(x=1300, y=430)
 
-    #I WILL EDIT THIS LINE (EDITED)
+    
     def create_button_login(self):
         self.button = tk.Button(self.master, text="Login", command=self.handle_login, bg="WHITE", fg="black", border=2,
                                 highlightbackground='#a2f6c9', highlightthickness=3, font=('Impact', 20), width=20)
