@@ -28,7 +28,7 @@ class LoginSystem:
 
     def create_entry_username(self):
         self.username = tk.StringVar()
-        tk.Label(self.master, text="USERNAME:", bg="#CADDFF", fg="black", font=('Impact', 20, 'bold'), width=10,
+        tk.Label(self.master, text="USERNAME:", bg="white", fg="black", font=('Impact', 20, 'bold'), width=10,
                  highlightbackground='black', highlightthickness=2) \
             .place(x=1100, y=330)
         self.entry_username = tk.Entry(self.master, textvariable=self.username, width=20, bg="#FFFFFF",
@@ -118,17 +118,17 @@ class LoginSystem:
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
          # THIS IS EDITED BY ME - GAB
-        employee_button = tk.Button(window, text="EMPLOYEE PAGE", font=("Impact",20,"bold"),bg="green", fg="black", border='2',highlightbackground='black', highlightthickness='2',  command=self.open_employee_info)
+        employee_button = tk.Button(window, text="EMPLOYEE PAGE", font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2',  command=self.open_employee_info)
         employee_button.place(x=1500,y=400)
 
-        payroll_button = tk.Button(window, text="PAYROLL PAGE",font=("Impact",20,"bold"),bg="green", fg="black", border='2',highlightbackground='black', highlightthickness='2', command=self.open_payroll)
+        payroll_button = tk.Button(window, text="PAYROLL PAGE",font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2', command=self.open_payroll)
         payroll_button.place(x=1500,y=540)
 
-        user_button = tk.Button(window, text="USER PAGE",font=("Impact",20,"bold"),bg="green", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.open_user)
+        user_button = tk.Button(window, text="USER PAGE",font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.open_user)
         user_button.place(x=1500,y=660)
 
        
-        payrollsql_button = tk.Button(window, text="PAYROLL DATA",font=("Impact",20,"bold"),bg="green", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.sqldata)
+        payrollsql_button = tk.Button(window, text="PAYROLL DATA",font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.sqldata)
         payrollsql_button.place(x=1500,y=790)
 
 # Example usage
