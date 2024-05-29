@@ -45,7 +45,7 @@ class LoginSystem:
                                        show="*")
         self.entry_password.place(x=1300, y=430)
 
-#I WILL EDIT THIS -GIAN
+
     def create_button_login(self):
         self.button = tk.Button(self.master, text="Login", command=self.handle_login, bg="#D0EFFF", fg="black", border=2,
                                 highlightbackground='#a2f6c9', highlightthickness=3, font=('Impact', 20), width=20)
@@ -117,7 +117,7 @@ class LoginSystem:
         bg_label.image = bg_photo
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-         # THIS IS EDITED BY ME - GAB
+        
         employee_button = tk.Button(window, text="EMPLOYEE PAGE", font=("Impact",20,"bold"),bg="white", fg="black", border='2',highlightbackground='black', highlightthickness='2',  command=self.open_employee_info)
         employee_button.place(x=1500,y=400)
 
