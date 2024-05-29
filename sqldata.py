@@ -80,7 +80,7 @@ def create_sqldata_window(master):
     fetchtwo_button = Button(button_frame, text="Employee Registration", command=lambda: display_data(scrollable_frame, fetch_data('employee_registration'), employee_reg_headers, employee_reg_col_widths))
     fetchtwo_button.pack(side=LEFT, padx=5)
 
-    fetchthree_button = Button(button_frame, text="Payroll", command=lambda: display_data(scrollable_frame, fetch_data('payrollseris'), payroll_headers, payroll_col_widths))
+    fetchthree_button = Button(button_frame, text="Payroll DATA", command=lambda: display_data(scrollable_frame, fetch_data('payrollseris'), payroll_headers, payroll_col_widths))
     fetchthree_button.pack(side=LEFT, padx=5)
 
     # Define headers and column widths for each table
