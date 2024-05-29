@@ -117,7 +117,7 @@ class LoginSystem:
         bg_label.image = bg_photo
         bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        #I WILL CHANGE THIS BACK
+         # THIS IS EDITED BY ME - GAB
         employee_button = tk.Button(window, text="EMPLOYEE PAGE", font=("Impact",20,"bold"),bg="green", fg="black", border='2',highlightbackground='black', highlightthickness='2',  command=self.open_employee_info)
         employee_button.place(x=1500,y=400)
 
@@ -127,7 +127,7 @@ class LoginSystem:
         user_button = tk.Button(window, text="USER PAGE",font=("Impact",20,"bold"),bg="green", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.open_user)
         user_button.place(x=1500,y=660)
 
-        # THIS IS EDITED BY ME - GAB
+       
         payrollsql_button = tk.Button(window, text="PAYROLL DATA",font=("Impact",20,"bold"),bg="green", fg="black", border='2',highlightbackground='black', highlightthickness='2' ,command=self.sqldata)
         payrollsql_button.place(x=1500,y=790)
 
