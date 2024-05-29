@@ -36,6 +36,7 @@ class LoginSystem:
                                        highlightbackground='black', highlightthickness=2, font=('Impact', 20, 'bold'))
         self.entry_username.place(x=1300, y=330)
 
+    #I WILL EDIT THIS LINE
     def create_entry_password(self):
         self.password = tk.StringVar()
         tk.Label(self.master, text="PASSWORD:", bg="#CADDFF", fg="black", font=('Impact', 20, 'bold'), width=10,
